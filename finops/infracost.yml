@@ -1,0 +1,7 @@
+﻿version: 0.1
+
+projects:
+  - path: terraform/hub-spoke
+    name: enterprise-hub-spoke-network
+  - path: terraform/aks-cluster
+    name: production-aks-cluster

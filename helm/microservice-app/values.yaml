@@ -1,0 +1,31 @@
+﻿replicaCount: 3
+image:
+  repository: mityadav/enterprise-api
+  tag: v2.4.0
+  pullPolicy: IfNotPresent
+
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 25%
+    maxUnavailable: 0
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 75
+
+keda:
+  enabled: true
+  pollingInterval: 15
+  cooldownPeriod: 300

@@ -1,0 +1,6 @@
+﻿apiVersion: v2
+name: enterprise-microservice
+description: Production-grade Helm chart with HPA, KEDA, and rolling updates
+type: application
+version: 1.0.0
+appVersion: "2.4.0"

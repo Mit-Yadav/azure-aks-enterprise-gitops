@@ -1,0 +1,25 @@
+﻿apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: aks-sli-slo-alerts
+  namespace: monitoring
+spec:
+  groups:
+    - name: slo-error-budget.rules
+      rules:
+        - alert: HighErrorBudgetBurnRate
+          expr: (sum(rate(http_requests_total{status=~"5.."}[1h])) / sum(rate(http_requests_total[1h]))) > (1 - 0.999) * 14.4
+          for: 2m
+          labels:
+            severity: critical
+            tier: tier-1
+          annotations:
+            summary: "Error budget burning at 14.4x rate (MTTR alert)"
+            description: "High error rate in microservices will exhaust monthly budget within 2 hours."
+        - alert: PodCrashLoopBackOff
+          expr: increase(kube_pod_container_status_restarts_total[15m]) > 3
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Pod restarting frequently in namespace {{ $labels.namespace }}"
